@@ -1,5 +1,8 @@
 import express from "express";
-import { getAllMessagesByTicketID, createNewMessage } from "../models/messages.js";
+import {
+  getAllMessagesByTicketID,
+  createNewMessage,
+} from "../models/messages.js";
 
 export const messagesRouter = express.Router();
 
@@ -10,8 +13,7 @@ messagesRouter.get("/tickets/:id", async (req, res) => {
 });
 
 messagesRouter.post("/", async (req, res) => {
-    const newMessage = await createNewMessage(req.params.id, req.body);
-    res.status(200);
-    res.json({ success: true, payload: newMessage });
+  const newMessage = await createNewMessage(req.body);
+  res.status(200);
+  res.json({ success: true, payload: newMessage });
 });
-

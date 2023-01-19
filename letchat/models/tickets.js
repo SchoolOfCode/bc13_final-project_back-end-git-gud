@@ -7,28 +7,37 @@ export async function getAllTickets() {
   return result.rows;
 }
 
-export async function getAllTicketsByLandlord(landlord_id) { 
+export async function getAllTicketsByLandlord(landlord_id) {
   const query = "SELECT * FROM tickets WHERE landlord_id = $1";
-  const result  = await pool.query(query, [landlord_id]);   
+  const result = await pool.query(query, [landlord_id]);
   console.log(result.rows);
-  return result.rows; 
+  return result.rows;
 }
 
-export async function getAllTicketsByTenant(tenant_id) { 
+export async function getAllTicketsByTenant(tenant_id) {
   const query = "SELECT * FROM tickets WHERE tenant_id = $1";
-  const result  = await pool.query(query, [tenant_id]);   
+  const result = await pool.query(query, [tenant_id]);
   console.log(result.rows);
-  return result.rows; 
+  return result.rows;
 }
 
 export async function createNewTicket(ticket) {
-  const query = "INSERT INTO tickets (property_id, landlord_id, tenant_id, completed, raised_by) VALUES ($1, $2, $3, $4, $5) RETURNING *";
-  const result  = await pool.query(query, [ticket.property_id, ticket.landlord_id, ticket.tenant_id, ticket.completed, ticket.raised_by]);
+  const query =
+    "INSERT INTO tickets (property_id, landlord_id, tenant_id, completed, raised_by, subject, message) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *";
+  const result = await pool.query(query, [
+    ticket.property_id,
+    ticket.landlord_id,
+    ticket.tenant_id,
+    ticket.completed,
+    ticket.raised_by,
+    ticket.subject,
+    ticket.message,
+  ]);
   return result.rows[0];
 }
 
 export async function updateTicket(id, ticket) {
   const query = "UPDATE tickets SET completed = $1 WHERE id = $2 RETURNING *";
-  const result  = await pool.query(query, [ticket.completed, id]);
+  const result = await pool.query(query, [ticket.completed, id]);
   return result.rows[0];
 }

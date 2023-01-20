@@ -27,7 +27,7 @@ messagesRouter.post("/", async (req, res) => {
     res.status(200);
     res.json({ success: true, payload: newMessage });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500);
     res.json({ success: false, message: "Failed to create new message" });
   }

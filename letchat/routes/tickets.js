@@ -1,4 +1,7 @@
 import express from "express";
+
+
+
 import {
   getAllTickets,
   getAllTicketsByLandlord,
@@ -12,56 +15,55 @@ export const ticketsRouter = express.Router();
 ticketsRouter.get("/", async (req, res) => {
   try {
     const allTickets = await getAllTickets();
-    console.log(allTickets);
+    // console.log(allTickets);
     res.status(200);
     res.json({ success: true, payload: allTickets });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500);
     res.json({ success: false, message: "Failed to get all tickets" });
   }
 });
 
 ticketsRouter.get("/landlords/:id", async (req, res) => {
-  try {
-    const allTicketsByLandlord = await getAllTicketsByLandlord(req.params.id);
-    console.log(allTicketsByLandlord);
-    res.status(200);
-    res.json({ success: true, payload: allTicketsByLandlord });
-  } catch (error) {
-    console.log(error);
-    res.status(500);
+  const allTicketsByLandlord = await getAllTicketsByLandlord(req.params.id);
+  if (allTicketsByLandlord.length === 0) {
+    res.status(404);
     res.json({
       success: false,
-      message: "Failed to get all tickets by landlord",
+      message: "No tickets found for this landlord",
     });
-  }
+  } else {
+    // console.log(allTicketsByLandlord);
+    res.status(200);
+    res.json({ success: true, payload: allTicketsByLandlord });
+  } 
 });
 
 ticketsRouter.get("/tenants/:id", async (req, res) => {
-  try {
-    const allTicketsByTenant = await getAllTicketsByTenant(req.params.id);
-    console.log(allTicketsByTenant);
-    res.status(200);
-    res.json({ success: true, payload: allTicketsByTenant });
-  } catch (error) {
-    console.log(error);
-    res.status(500);
+  const allTicketsByTenant = await getAllTicketsByTenant(req.params.id);
+  if (allTicketsByTenant.length === 0) {
+    res.status(404);
     res.json({
       success: false,
-      message: "Failed to get all tickets by tenant",
+      message: "No tickets found for this tenant",
     });
-  }
+  } else {
+    // console.log(allTicketsByTenant);
+    res.status(200);
+    res.json({ success: true, payload: allTicketsByTenant });
+  } 
 });
 
 ticketsRouter.post("/", async (req, res) => {
   try {
     const newTicket = await createNewTicket(req.body);
+    // console.log(newTicket);
     res.status(200);
     res.json({ success: true, payload: newTicket });
   } catch (error) {
-    console.log(error);
-    res.status(500);
+    // console.log(error);
+    res.status(404);
     res.json({
       success: false,
       message: "Failed to create new ticket",
@@ -72,10 +74,11 @@ ticketsRouter.post("/", async (req, res) => {
 ticketsRouter.patch("/:id", async (req, res) => {
   try {
     const updatedTicket = await updateTicket(req.params.id, req.body);
+    // console.log(updatedTicket);
     res.status(200);
     res.json({ success: true, payload: updatedTicket });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500);
     res.json({
       success: false,

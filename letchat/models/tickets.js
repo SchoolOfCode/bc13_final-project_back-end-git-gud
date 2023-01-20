@@ -8,7 +8,8 @@ export async function getAllTickets() {
 }
 
 export async function getAllTicketsByLandlord(landlord_id) {
-  const query = "SELECT * FROM tickets WHERE landlord_id = $1";
+  const query =
+    "SELECT * FROM tickets INNER JOIN tenants ON tenants.id = tickets.tenant_id WHERE tickets.landlord_id = $1";
   const result = await pool.query(query, [landlord_id]);
   console.log(result.rows);
   return result.rows;

@@ -18,9 +18,6 @@ CREATE TABLE properties (
   INSERT INTO properties (address, postcode, landlord_id)
   VALUES ('123 postgres way', 'pg1 5ql', 1);
   
-  
-  
-  
  CREATE TABLE tenants (
   id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   first_name VARCHAR(35),

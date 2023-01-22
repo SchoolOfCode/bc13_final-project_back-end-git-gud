@@ -6,6 +6,7 @@ import {
 
 export const messagesRouter = express.Router();
 
+// Get messages by ticket ID
 messagesRouter.get("/tickets/:id", async (req, res) => {
   try {
     const allMessages = await getAllMessagesByTicketID(req.params.id);
@@ -21,13 +22,13 @@ messagesRouter.get("/tickets/:id", async (req, res) => {
   }
 });
 
+// Create new message
 messagesRouter.post("/", async (req, res) => {
   try {
     const newMessage = await createNewMessage(req.body);
     res.status(200);
     res.json({ success: true, payload: newMessage });
   } catch (error) {
-    // console.log(error);
     res.status(500);
     res.json({ success: false, message: "Failed to create new message" });
   }

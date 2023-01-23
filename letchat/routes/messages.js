@@ -8,17 +8,16 @@ export const messagesRouter = express.Router();
 
 // Get messages by ticket ID
 messagesRouter.get("/tickets/:id", async (req, res) => {
-  try {
-    const allMessages = await getAllMessagesByTicketID(req.params.id);
-    res.status(200);
-    res.json({ success: true, payload: allMessages });
-  } catch (error) {
-    console.log(error);
-    res.status(500);
+  const allMessagesByTicketID = await getAllMessagesByTicketID(req.params.id);
+  if (allMessagesByTicketID.length === 0) {
+    res.status(404);
     res.json({
       success: false,
-      message: "Failed to get all messages by ticket ID",
+      message: "No messages found for this ticket ID",
     });
+  } else {
+    res.status(200);
+    res.json({ success: true, payload: allMessagesByTicketID });
   }
 });
 
@@ -29,7 +28,7 @@ messagesRouter.post("/", async (req, res) => {
     res.status(200);
     res.json({ success: true, payload: newMessage });
   } catch (error) {
-    res.status(500);
+    res.status(404);
     res.json({ success: false, message: "Failed to create new message" });
   }
 });

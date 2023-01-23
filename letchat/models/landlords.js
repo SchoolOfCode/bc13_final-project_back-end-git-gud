@@ -5,3 +5,9 @@ export async function getAllLandlords() {
   const result = await pool.query(query);
   return result.rows;
 }
+
+export async function getAllPropertiesByLandlordID(landlord_id) {
+  const query = "SELECT properties.address, properties.postcode, properties.landlord_id FROM properties WHERE landlord_id = $1";
+  const result = await pool.query(query, [landlord_id]);
+  return result.rows;
+}

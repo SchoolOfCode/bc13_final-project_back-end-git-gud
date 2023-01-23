@@ -1,5 +1,8 @@
 import express from "express";
-import { getAllLandlords } from "../models/landlords.js";
+import {
+  getAllLandlords,
+  getAllPropertiesByLandlordID,
+} from "../models/landlords.js";
 
 export const landlordsRouter = express.Router();
 
@@ -10,7 +13,24 @@ landlordsRouter.get("/", async (req, res) => {
     res.status(200);
     res.json({ success: true, payload: allLandlords });
   } catch (error) {
-    res.status(500);
-    res.json({ success: false, message: "Failed to get all landlords" });
+    res.status(404);
+    res.json({ success: false, message: "There are no landlords!" });
+  }
+});
+
+// Get all properties by landlord ID
+landlordsRouter.get("/:id", async (req, res) => {
+  const allPropertiesByLandlordID = await getAllPropertiesByLandlordID(
+    req.params.id
+  );
+  if (allPropertiesByLandlordID.length === 0) {
+    res.status(404);
+    res.json({
+      success: false,
+      message: "No properties found for landlord ID",
+    });
+  } else {
+    res.status(200);
+    res.json({ success: true, payload: allPropertiesByLandlordID });
   }
 });

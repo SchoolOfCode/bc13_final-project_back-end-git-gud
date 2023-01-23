@@ -25,7 +25,7 @@ test("GET tickets", async () => {
 });
 
 test("GET tickets by landlord fails when there are no tickets for that landlord", async () => {
-  const response = await request(app).get("/api/tickets/landlords/19");
+  const response = await request(app).get("/api/tickets/landlords/99999");
   expect(response.statusCode).toBe(404);
   expect(response.body.success).toBe(false);
   expect(response.body.message).toBe("No tickets found for this landlord");

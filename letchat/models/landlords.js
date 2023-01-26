@@ -3,6 +3,11 @@ import pool from "../db/index.js";
 export async function getAllLandlords() {
   const query = "SELECT * FROM landlords";
   const result = await pool.query(query);
-  console.log(result.rows);
+  return result.rows;
+}
+
+export async function getAllPropertiesByLandlordID(landlord_id) {
+  const query = "SELECT properties.address, properties.postcode, properties.landlord_id FROM properties WHERE landlord_id = $1";
+  const result = await pool.query(query, [landlord_id]);
   return result.rows;
 }

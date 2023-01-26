@@ -3,7 +3,6 @@ import pool from "../db/index.js";
 export async function getAllTickets() {
   const query = "SELECT * FROM tickets";
   const result = await pool.query(query);
-  console.log(result.rows);
   return result.rows;
 }
 
@@ -11,14 +10,12 @@ export async function getAllTicketsByLandlord(landlord_id) {
   const query =
     "SELECT tickets.id, tickets.subject, tickets.message, tickets.landlord_id, tickets.property_id, tickets.completed, tickets.raised_by, tickets.date, tickets.time, tenants.first_name, tenants.last_name FROM tickets INNER JOIN tenants ON tenants.id = tickets.tenant_id WHERE tickets.landlord_id = $1";
   const result = await pool.query(query, [landlord_id]);
-  console.log(result.rows);
   return result.rows;
 }
 
 export async function getAllTicketsByTenant(tenant_id) {
   const query = "SELECT * FROM tickets WHERE tenant_id = $1";
   const result = await pool.query(query, [tenant_id]);
-  console.log(result.rows);
   return result.rows;
 }
 

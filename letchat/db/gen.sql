@@ -8,17 +8,15 @@ CREATE TABLE landlords (
   );
   INSERT INTO landlords (first_name, last_name, email)
   VALUES ('Jason', 'Chalangary', 'jason@email.com');
-       
+
 CREATE TABLE properties (
   id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
   address VARCHAR(150),
   postcode VARCHAR(10),
   landlord_id INT REFERENCES landlords(id)
-  
   );
   INSERT INTO properties (address, postcode, landlord_id)
   VALUES ('123 postgres way', 'pg1 5ql', 1);
-  
  CREATE TABLE tenants (
   id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
   first_name VARCHAR(35),
@@ -61,3 +59,4 @@ CREATE TABLE messages (
   (3, 1, 'tenant','Yes, all done and signed.' , DEFAULT, DEFAULT),
   (2, 2, 'tenant','This is real bad scoob. The sink!!' , DEFAULT, DEFAULT),
         (1, 2, 'landlord','Oh god...', DEFAULT, DEFAULT);
+

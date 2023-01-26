@@ -4,7 +4,6 @@ export async function getAllMessagesByTicketID(ticket_id) {
   const query =
     "SELECT messages.id,	messages.user_id,	messages.ticket_id,	messages.user_role,	messages.message,	messages.time,	messages.date, tickets.subject FROM messages INNER JOIN tickets ON tickets.id = messages.ticket_id WHERE ticket_id = $1";
   const result = await pool.query(query, [ticket_id]);
-  console.log(result.rows);
   return result.rows;
 }
 

@@ -37,21 +37,31 @@ export async function getAllTicketsByTenant(tenant_id) {
 export async function createNewTicket(ticket) {
   try {
     const query =
-      "INSERT INTO tickets (property_id, landlord_id, tenant_id, completed, raised_by, subject, message) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *";
-    const result = await pool.query(query, [
-      ticket.property_id,
-      ticket.landlord_id,
-      ticket.tenant_id,
-      ticket.completed,
-      ticket.raised_by,
-      ticket.subject,
-      ticket.message,
-    ]);
-    return result.rows[0];
+    "INSERT INTO tickets (property_id, landlord_id, tenant_id, completed, raised_by, subject, message) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *";
+  const result = await pool.query(query, [
+    ticket.property_id,
+    ticket.landlord_id,
+    ticket.tenant_id,
+    ticket.completed,
+    ticket.raised_by,
+    ticket.subject,
+    ticket.message,
+  ]);
+  const ticket_id = result.rows[0].id;
+  const msgQuery =
+    "INSERT INTO messages (user_id, ticket_id, user_role, message) VALUES ($1, $2, $3, $4) RETURNING *";
+  const msgResult = await pool.query(msgQuery, [
+    ticket.tenant_id,
+    ticket_id,
+    ticket.raised_by,
+    ticket.message,
+  ]);
+  return result.rows[0];
   } catch (error) {
     console.error(error);
     throw error;
   }
+
 }
 
 export async function updateTicket(id, ticket) {

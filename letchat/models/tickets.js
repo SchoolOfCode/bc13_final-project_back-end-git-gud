@@ -31,6 +31,15 @@ export async function createNewTicket(ticket) {
     ticket.subject,
     ticket.message,
   ]);
+  const ticket_id = result.rows[0].id;
+  const msgQuery =
+    "INSERT INTO messages (user_id, ticket_id, user_role, message) VALUES ($1, $2, $3, $4) RETURNING *";
+  const msgResult = await pool.query(msgQuery, [
+    ticket.tenant_id,
+    ticket_id,
+    ticket.raised_by,
+    ticket.message,
+  ]);
   return result.rows[0];
 }
 
